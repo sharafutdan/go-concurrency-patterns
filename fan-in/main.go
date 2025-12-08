@@ -33,8 +33,10 @@ func FanIn(input1, input2 <-chan string) <-chan string {
 func main() {
 	joe := generatorFunc("joe")
 	mary := generatorFunc("mary")
-	for i := 0; i < 10; i++ {
+	var i int
+	for i < 10 {
 		fmt.Println(<-FanIn(joe, mary))
+		i++
 	}
 	fmt.Println("exiting")
 }
