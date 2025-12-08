@@ -17,15 +17,16 @@ func generatorFunc(message string) <-chan string {
 	return resChan
 }
 
-func FanIn(channels ...<-chan string) <-chan string {
+func FanIn(input1, input2 <-chan string) <-chan string {
 	c := make(chan string)
-	for _, channel := range channels {
-		go func() {
-			for {
-				c <- <-channel
-			}
-		}()
-	}
+	go func() {
+		select {
+		case v := <-input1:
+			c <- v
+		case v := <-input2:
+			c <- v
+		}
+	}()
 	return c
 }
 
